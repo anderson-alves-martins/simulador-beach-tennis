@@ -1,0 +1,22 @@
+<!doctype html>
+<html lang="pt-BR"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Simulador de Beach Tennis</title>
+<style>*{box-sizing:border-box}body{margin:0;background:#102b36;color:#fff;font-family:system-ui,sans-serif;min-height:100vh;display:grid;place-items:center;padding:16px}main{width:min(100%,720px)}h1{font-size:1.5rem}p{color:#d4e1e4}canvas{display:block;width:100%;height:auto;touch-action:none;border-radius:14px;box-shadow:0 12px 30px #0005}section{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;margin-top:16px}.team{padding:12px;border-radius:10px;background:#ffffff15}.team h2{font-size:1rem}.team label{display:block;margin:9px 0;font-size:.9rem}.team input{width:100%;padding:10px;border:0;border-radius:7px;font:inherit}button{margin:15px 0;padding:12px 18px;border:0;border-radius:9px;background:#f3ce77;font-weight:700;cursor:pointer}</style></head>
+<body><main><h1>🎾 Simulador Tático de Beach Tennis</h1><p>Arraste os jogadores pelas laterais e pelo fundo. Cada dupla permanece do seu lado da rede.</p><canvas id="court" width="640" height="860"></canvas>
+<section><div class="team"><h2>🔵 Campo azul</h2><label>Jogador 1<input data-player="0" placeholder="Nome (opcional)"></label><label>Jogador 2<input data-player="1" placeholder="Nome (opcional)"></label></div><div class="team"><h2>🔴 Campo vermelho</h2><label>Jogador 1<input data-player="2" placeholder="Nome (opcional)"></label><label>Jogador 2<input data-player="3" placeholder="Nome (opcional)"></label></div></section><button id="reset">Reiniciar posições</button></main>
+<script>
+const canvas=document.querySelector('#court'),ctx=canvas.getContext('2d');
+const initial=[{x:210,y:190,n:1,side:'top',color:'#1979c7'},{x:430,y:190,n:2,side:'top',color:'#1979c7'},{x:210,y:670,n:1,side:'bottom',color:'#dc4949'},{x:430,y:670,n:2,side:'bottom',color:'#dc4949'}];
+let players=initial.map(p=>({...p})),drag=null;const names=['','','',''];
+function draw(){
+ctx.fillStyle='#d4b37c';ctx.fillRect(0,0,640,860);ctx.fillStyle='#e6c895';ctx.fillRect(70,65,500,730);
+ctx.strokeStyle='#fff';ctx.lineWidth=7;ctx.strokeRect(80,75,480,710);
+ctx.fillStyle='#203c48';ctx.fillRect(72,420,496,20);ctx.strokeStyle='#e8e8e8';ctx.lineWidth=2;for(let x=80;x<=560;x+=18){ctx.beginPath();ctx.moveTo(x,420);ctx.lineTo(x,440);ctx.stroke()}
+ctx.textAlign='center';ctx.textBaseline='middle';ctx.font='bold 19px system-ui';ctx.fillStyle='#23424b';ctx.fillText('CAMPO AZUL',320,115);ctx.fillText('CAMPO VERMELHO',320,752);
+players.forEach((p,i)=>{ctx.beginPath();ctx.arc(p.x,p.y,24,0,Math.PI*2);ctx.fillStyle=p.color;ctx.fill();ctx.strokeStyle='#fff';ctx.lineWidth=3;ctx.stroke();ctx.fillStyle='#fff';ctx.font='bold 20px system-ui';ctx.fillText(p.n,p.x,p.y);if(names[i]){ctx.font='bold 16px system-ui';ctx.fillStyle='#20333a';ctx.fillText(names[i],p.x,p.y+40)}})}
+function point(e){const r=canvas.getBoundingClientRect();return{x:(e.clientX-r.left)*640/r.width,y:(e.clientY-r.top)*860/r.height}}
+canvas.addEventListener('pointerdown',e=>{const q=point(e);drag=[...players].reverse().find(p=>Math.hypot(p.x-q.x,p.y-q.y)<35)||null;if(drag)canvas.setPointerCapture(e.pointerId)});
+canvas.addEventListener('pointermove',e=>{if(!drag)return;const q=point(e);drag.x=Math.max(26,Math.min(614,q.x));drag.y=drag.side==='top'?Math.max(26,Math.min(395,q.y)):Math.max(465,Math.min(834,q.y));draw()});
+for(const event of ['pointerup','pointercancel','lostpointercapture'])canvas.addEventListener(event,()=>drag=null);
+document.querySelectorAll('[data-player]').forEach(input=>input.addEventListener('input',()=>{names[Number(input.dataset.player)]=input.value.trim();draw()}));
+document.querySelector('#reset').addEventListener('click',()=>{players=initial.map(p=>({...p}));draw()});draw();
+</script></body></html>
