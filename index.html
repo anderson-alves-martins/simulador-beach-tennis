@@ -7,8 +7,11 @@
 const canvas=document.querySelector('#court'),ctx=canvas.getContext('2d');
 const initial=[{x:210,y:190,n:1,side:'top',color:'#1979c7'},{x:430,y:190,n:2,side:'top',color:'#1979c7'},{x:210,y:670,n:1,side:'bottom',color:'#dc4949'},{x:430,y:670,n:2,side:'bottom',color:'#dc4949'}];
 let players=initial.map(p=>({...p})),ball={x:320,y:600},drag=null,active=null,mode='move';const names=['','','',''],strokes=[];const ink=document.querySelector('#ink'),weight=document.querySelector('#weight');document.querySelectorAll('.swatch').forEach(b=>b.addEventListener('click',()=>{ink.value=b.dataset.color;document.querySelectorAll('.swatch').forEach(x=>x.classList.toggle('selected',x===b))}));ink.addEventListener('input',()=>document.querySelectorAll('.swatch').forEach(b=>b.classList.toggle('selected',b.dataset.color===ink.value)));
-function draw(){
-const sand=ctx.createLinearGradient(0,0,640,860);sand.addColorStop(0,'#dfc08b');sand.addColorStop(.52,'#cfa66e');sand.addColorStop(1,'#e3c48d');ctx.fillStyle=sand;ctx.fillRect(0,0,640,860);const courtSand=ctx.createLinearGradient(70,65,570,795);courtSand.addColorStop(0,'#f3d8a4');courtSand.addColorStop(.5,'#e7c48b');courtSand.addColorStop(1,'#f1d19a');ctx.fillStyle=courtSand;ctx.fillRect(70,65,500,730);ctx.save();ctx.globalAlpha=.12;for(let i=0;i<1800;i++){const x=(i*97.37)%640,y=(i*61.71)%860;ctx.fillStyle=i%3?'#a98152':'#fff8e5';ctx.fillRect(x,y,2+(i%3),1+(i%2))}ctx.restore();
+const sandLayer=document.createElement('canvas');sandLayer.width=640;sandLayer.height=860;const sandCtx=sandLayer.getContext('2d');
+
+const sand=sandCtx.createLinearGradient(0,0,640,860);sand.addColorStop(0,'#dfc08b');sand.addColorStop(.52,'#cfa66e');sand.addColorStop(1,'#e3c48d');sandCtx.fillStyle=sand;sandCtx.fillRect(0,0,640,860);const courtSand=sandCtx.createLinearGradient(70,65,570,795);courtSand.addColorStop(0,'#f3d8a4');courtSand.addColorStop(.5,'#e7c48b');courtSand.addColorStop(1,'#f1d19a');sandCtx.fillStyle=courtSand;sandCtx.fillRect(70,65,500,730);sandCtx.save();sandCtx.globalAlpha=.12;for(let i=0;i<1800;i++){const x=(i*97.37)%640,y=(i*61.71)%860;sandCtx.fillStyle=i%3?'#a98152':'#fff8e5';sandCtx.fillRect(x,y,2+(i%3),1+(i%2))}sandCtx.restore();
+
+function draw(){ctx.drawImage(sandLayer,0,0);
 ctx.strokeStyle='#fffdf5';ctx.lineWidth=7;ctx.strokeRect(80,75,480,710);
 ctx.fillStyle='#33434a';ctx.fillRect(72,418,496,24);ctx.strokeStyle='#dfe8e9';ctx.lineWidth=2;for(let x=80;x<=560;x+=18){ctx.beginPath();ctx.moveTo(x,420);ctx.lineTo(x,440);ctx.stroke()}
 // Dois minicons em cada lateral de cada meia quadra: três zonas iguais em profundidade.
