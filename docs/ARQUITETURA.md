@@ -12,6 +12,8 @@ Aplicação web estática, sem backend, framework, banco de dados ou etapa de co
 - **Política de conteúdo**: CSP declarada por `<meta>` em `index.html`. Cabeçalhos HTTP adicionais dependem da hospedagem.
 
 ## Restrições atuais
+- A CSP em `<meta>` não consegue definir `frame-ancestors`; portanto, ela não impede que outro site incorpore esta página em um frame. Também não substitui cabeçalhos como HSTS, X-Frame-Options e Permissions-Policy.
+- O GitHub Pages não permite configurar esses cabeçalhos HTTP no repositório. Para aplicá-los, é necessário servir o domínio por um proxy ou CDN que permita definir cabeçalhos, por exemplo, Cloudflare.
 - Os dados não são gravados em armazenamento persistente; fechar ou recarregar a página descarta o estado em memória.
 - `Desfazer` atua sobre traços, não sobre deslocamentos.
 - A seleção da borracha não calcula a distância completa aos segmentos.
