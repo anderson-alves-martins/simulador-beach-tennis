@@ -24,7 +24,7 @@ function drawNet(){
 function draw(){ctx.drawImage(sandLayer,0,0);
 // Contorno e linhas de serviço inspirados na quadra da referência.
 ctx.save();ctx.strokeStyle='#fffdf5';ctx.lineCap='square';ctx.shadowColor='rgba(130,91,43,.2)';ctx.shadowBlur=4;ctx.shadowOffsetY=2;
-ctx.lineWidth=7;ctx.strokeRect(80,75,480,710);
+ctx.lineWidth=7;ctx.beginPath();ctx.moveTo(80,75);ctx.lineTo(560,75);ctx.moveTo(80,785);ctx.lineTo(560,785);ctx.stroke();
 ctx.lineWidth=5;ctx.beginPath();ctx.moveTo(80,290);ctx.lineTo(560,290);ctx.moveTo(320,75);ctx.lineTo(320,290);ctx.moveTo(80,570);ctx.lineTo(560,570);ctx.moveTo(320,570);ctx.lineTo(320,785);ctx.stroke();ctx.restore();
 drawNet();
 ctx.textAlign='center';ctx.textBaseline='middle';ctx.font='bold 19px system-ui';ctx.fillStyle='#23424b';
