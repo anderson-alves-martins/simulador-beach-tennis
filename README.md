@@ -17,6 +17,7 @@ Aplicação web interativa para demonstrar posicionamento, movimentação e traj
 Abra o link oficial. Selecione **Mover** para reposicionar jogadores/bola ou uma ferramenta de **Desenho Tático** para traçar jogadas. Use **Salvar imagem** antes de fechar a página: ainda não existe salvamento automático de jogadas.
 
 ## Documentação
+- [Política de segurança](SECURITY.md)
 - [Guia de uso](docs/GUIA-DE-USO.md)
 - [Arquitetura e manutenção](docs/ARQUITETURA.md)
 - [Auditoria e roadmap](docs/ROADMAP.md)
