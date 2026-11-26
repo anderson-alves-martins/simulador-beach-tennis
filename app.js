@@ -6,6 +6,31 @@ const playerAvatar=new Image();playerAvatar.src='assets/player-beach.png';player
 
 const sand=sandCtx.createLinearGradient(0,0,640,860);sand.addColorStop(0,'#dfc08b');sand.addColorStop(.52,'#cfa66e');sand.addColorStop(1,'#e3c48d');sandCtx.fillStyle=sand;sandCtx.fillRect(0,0,640,860);const courtSand=sandCtx.createLinearGradient(70,65,570,795);courtSand.addColorStop(0,'#f3d8a4');courtSand.addColorStop(.5,'#e7c48b');courtSand.addColorStop(1,'#f1d19a');sandCtx.fillStyle=courtSand;sandCtx.fillRect(70,65,500,730);sandCtx.save();sandCtx.globalAlpha=.12;for(let i=0;i<1800;i++){const x=(i*97.37)%640,y=(i*61.71)%860;sandCtx.fillStyle=i%3?'#a98152':'#fff8e5';sandCtx.fillRect(x,y,2+(i%3),1+(i%2))}sandCtx.restore();
 
+// Cones de treino fixos nas faixas de areia externas.
+function drawTrainingCone(x, y) {
+  sandCtx.save();
+  sandCtx.translate(x, y);
+  sandCtx.fillStyle = '#ae4216';
+  sandCtx.fillRect(-13, 6, 26, 6);
+  sandCtx.beginPath();
+  sandCtx.moveTo(-10, 7);
+  sandCtx.lineTo(-3, -13);
+  sandCtx.quadraticCurveTo(0, -17, 3, -13);
+  sandCtx.lineTo(10, 7);
+  sandCtx.closePath();
+  sandCtx.fillStyle = '#f47725';
+  sandCtx.fill();
+  sandCtx.clip();
+  sandCtx.fillStyle = '#fff6e5';
+  sandCtx.fillRect(-10, -5, 20, 4);
+  sandCtx.restore();
+}
+
+for (const y of [170, 330, 570, 725]) {
+  drawTrainingCone(48, y);
+  drawTrainingCone(sandLayer.width - 48, y);
+}
+
 function drawNet(){
   const left=48,right=592,top=423,bottom=452;
   ctx.save();
